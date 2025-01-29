@@ -6,7 +6,7 @@
 /*   By: sabderra <sabderra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:25:13 by sabderra          #+#    #+#             */
-/*   Updated: 2025/01/23 21:54:42 by sabderra         ###   ########.fr       */
+/*   Updated: 2025/01/29 12:45:47 by sabderra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	action(int sig, siginfo_t *info, void *context)
 	(void)context;
 	if (!client_pid)
 		client_pid = info->si_pid;
-	c |= (sig == SIGUSR2);
+	if (sig == SIGUSR2)
+    	c = 1;
 	if (++i == 8)
 	{
 		i = 0;
@@ -39,7 +40,7 @@ static void	action(int sig, siginfo_t *info, void *context)
 		kill(client_pid, SIGUSR1);
 	}
 	else
-		c <<= 1;
+		c = c << 1;
 }
 
 int	main(void)
