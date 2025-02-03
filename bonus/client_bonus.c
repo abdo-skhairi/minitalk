@@ -1,40 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sabderra <sabderra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/08 17:58:19 by hbaddrul          #+#    #+#             */
-/*   Updated: 2025/02/03 13:41:23 by sabderra         ###   ########.fr       */
+/*   Created: 2025/02/01 16:26:18 by sabderra          #+#    #+#             */
+/*   Updated: 2025/02/03 13:32:19 by sabderra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "minitalk_bonus.h"
 
-int	ft_atoi(const char *str)
+void	reaciver(int sig)
 {
-	int					sign;
-	unsigned long long	total;
-
-	total = 0;
-	sign = 1;
-	while ((*str >= 9 && *str <= 13) || (*str == ' '))
-		str++;
-	if (*str == '-' || *str == '+')
+	if (sig == SIGUSR1)
 	{
-		if (*str == '-')
-			sign *= -1;
-		str++;
+		write(1, "Message received OK\n", 20);
 	}
-	while (*str >= '0' && *str <= '9')
-	{
-		total = total * 10 + (*str - '0');
-		str++;
-	}
-	return (total * sign);
 }
 
 void	bit_sender(char c, int server_pid)
@@ -45,12 +28,28 @@ void	bit_sender(char c, int server_pid)
 	while (i >= 0)
 	{
 		if (c & (1 << i))
-		{
 			kill(server_pid, SIGUSR1);
-		}
 		else
 			kill(server_pid, SIGUSR2);
-		usleep(1000);
+		usleep(400);
+		i--;
+	}
+}
+
+void	len_sender(int len, int server_pid)
+{
+	int	i;
+
+	i = 31;
+	if (len < 0)
+		return ;
+	while (i >= 0)
+	{
+		if (len & (1 << i))
+			kill(server_pid, SIGUSR1);
+		else
+			kill(server_pid, SIGUSR2);
+		usleep(100);
 		i--;
 	}
 }
@@ -59,17 +58,23 @@ int	main(int ac, char **av)
 {
 	int		server_pid;
 	char	*str;
+	int		len;
 	int		i;
 
 	if (ac != 3)
 	{
-		write(1, "try next time : ", 16);
-		write(1, " <server_pid> <message>\n", 24);
+		write (1, "try next time : ", 16);
+		write (1, " <server_pid> <message>\n", 24);
 		return (1);
 	}
-	server_pid = ft_atoi(av[1]);
+	signal(SIGUSR1, reaciver);
 	str = av[2];
+	len = 0;
 	i = 0;
+	server_pid = ft_atoi(av[1]);
+	while (av[2][len])
+		len++;
+	len_sender(len, server_pid);
 	while (str[i])
 	{
 		bit_sender(str[i], server_pid);

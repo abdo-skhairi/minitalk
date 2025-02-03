@@ -1,32 +1,45 @@
-SOURCES = server.c client.c
-OBJECTS = $(SOURCES:.c=.o)
-
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-all: server client
+FT_PRINTF_DIR = ./ft_printf
+FT_PRINTF_LIB = $(FT_PRINTF_DIR)/libftprintf.a
 
-bonus: server client
+SRC_CLIENT = client.c
+SRC_SERVER = server.c
 
-server: server.o libft
-	$(CC) -o $@ $< -Llibft -lft
+OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
+OBJ_SERVER = $(SRC_SERVER:.c=.o)
 
-client: client.o libft
-	$(CC) -o $@ $< -Llibft -lft
+CLIENT = client
+SERVER = server
+
+all: $(FT_PRINTF_LIB) $(CLIENT) $(SERVER)
+
+$(FT_PRINTF_LIB):
+	$(MAKE) -C $(FT_PRINTF_DIR)
+
+$(CLIENT): $(OBJ_CLIENT) $(FT_PRINTF_LIB)
+	$(CC) $(CFLAGS) -o $(CLIENT) $(OBJ_CLIENT) $(FT_PRINTF_LIB)
+
+$(SERVER): $(OBJ_SERVER) $(FT_PRINTF_LIB)
+	$(CC) $(CFLAGS) -o $(SERVER) $(OBJ_SERVER) $(FT_PRINTF_LIB)
+
+bonus:
+	$(MAKE) -C ./bonus
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $?
-
-libft:
-	make -C libft
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS)
-	make -C libft clean
-	
+	$(MAKE) -C $(FT_PRINTF_DIR) clean
+	rm -f $(OBJ_CLIENT) $(OBJ_SERVER)
+	$(MAKE) -C ./bonus clean  # This will call the clean rule in the bonus Makefile
+
 fclean: clean
-	rm -f server client libft/libft.a
+	$(MAKE) -C $(FT_PRINTF_DIR) fclean
+	rm -f $(CLIENT) $(SERVER)
+	$(MAKE) -C ./bonus fclean  # This will call the fclean rule in the bonus Makefile
 
 re: fclean all
 
-.PHONY: all bonus libft clean fclean re
+.PHONY: bonus

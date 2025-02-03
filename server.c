@@ -3,58 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sabderra <sabderra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abdo <abdo@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 21:25:13 by sabderra          #+#    #+#             */
-/*   Updated: 2025/01/29 12:45:47 by sabderra         ###   ########.fr       */
+/*   Updated: 2025/02/03 21:08:52 by abdo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include <signal.h>
 #include <unistd.h>
-#include "libft/libft.h"
+#include <signal.h>
+#include "./ft_printf/ft_printf.h"
 
-static void	action(int sig, siginfo_t *info, void *context)
+void	cleaner(char *c, int *bit, int *check)
 {
-	static int				i = 0;
-	static pid_t			client_pid = 0;
-	static unsigned char	c = 0;
+	*c = 0;
+	*bit = 0;
+	*check = 0;
+}
 
-	(void)context;
-	if (!client_pid)
-		client_pid = info->si_pid;
-	if (sig == SIGUSR2)
-    	c = 1;
-	if (++i == 8)
+void	receiver(int sig, siginfo_t *information, void *unused)
+{
+	static int		client_pid;
+	static char		c;
+	static int		bit;
+	static int		check;
+
+	(void)unused;
+	if (check == 0)
 	{
-		i = 0;
-		if (!c)
-		{
-			kill(client_pid, SIGUSR2);
-			client_pid = 0;
-			return ;
-		}
-		ft_putchar_fd(c, 1);
-		c = 0;
-		kill(client_pid, SIGUSR1);
+		check = 1;
+		client_pid = information->si_pid;
 	}
+	if (client_pid == information->si_pid && check == 1)
+		client_pid = information->si_pid;
 	else
-		c = c << 1;
+		cleaner(&c, &bit, &check);
+	c = c << 1;
+	bit++;
+	if (sig == SIGUSR1)
+		c = c | 1;
+	if (bit == 8)
+	{
+		write(1, &c, 1);
+		cleaner(&c, &bit, &check);
+	}
 }
 
 int	main(void)
 {
-	struct sigaction	s_sigaction;
+	struct sigaction	s;
 
-	ft_putstr_fd("Server PID: ", 1);
-	ft_putnbr_fd(getpid(), 1);
-	ft_putchar_fd('\n', 1);
-	s_sigaction.sa_sigaction = action;
-	s_sigaction.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &s_sigaction, 0);
-	sigaction(SIGUSR2, &s_sigaction, 0);
-	while (1)
+	ft_printf("The Pid Of The Server is %d\n", getpid());
+	s.sa_sigaction = receiver;
+	s.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &s, NULL);
+	sigaction(SIGUSR2, &s, NULL);
+	while (1337)
+	{
 		pause();
-	return (0);
+	}
 }
