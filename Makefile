@@ -33,12 +33,12 @@ bonus:
 clean:
 	$(MAKE) -C $(FT_PRINTF_DIR) clean
 	rm -f $(OBJ_CLIENT) $(OBJ_SERVER)
-	$(MAKE) -C ./bonus clean  # This will call the clean rule in the bonus Makefile
+	$(MAKE) -C ./bonus clean
 
 fclean: clean
 	$(MAKE) -C $(FT_PRINTF_DIR) fclean
 	rm -f $(CLIENT) $(SERVER)
-	$(MAKE) -C ./bonus fclean  # This will call the fclean rule in the bonus Makefile
+	$(MAKE) -C ./bonus fclean
 
 re: fclean all
 

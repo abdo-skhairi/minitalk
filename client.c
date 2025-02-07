@@ -6,12 +6,11 @@
 /*   By: sabderra <sabderra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/08 17:58:19 by hbaddrul          #+#    #+#             */
-/*   Updated: 2025/02/03 13:41:23 by sabderra         ###   ########.fr       */
+/*   Updated: 2025/02/06 17:08:16 by sabderra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 int	ft_atoi(const char *str)

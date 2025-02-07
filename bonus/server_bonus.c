@@ -6,7 +6,7 @@
 /*   By: sabderra <sabderra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 12:37:49 by sabderra          #+#    #+#             */
-/*   Updated: 2025/02/04 12:38:08 by sabderra         ###   ########.fr       */
+/*   Updated: 2025/02/07 12:17:14 by sabderra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,8 @@ void	finalize_message(void)
 	if (g_data.index == g_data.len && g_data.len > 0)
 	{
 		g_data.str[g_data.index] = '\0';
-		ft_printf("%s", g_data.str);
-		usleep(300);
 		kill(g_data.client_pid, SIGUSR1);
+		ft_printf("%s", g_data.str);
 		cleaner(NULL, &g_data.check, &g_data.index, &g_data.str);
 		cleaner(NULL, &g_data.len, &g_data.j, NULL);
 		g_data.j = 31;
@@ -85,5 +84,7 @@ int	main(void)
 	sigaction(SIGUSR1, &s, NULL);
 	sigaction(SIGUSR2, &s, NULL);
 	while (1)
+	{
 		pause();
+	}
 }
