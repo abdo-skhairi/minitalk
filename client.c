@@ -6,7 +6,7 @@
 /*   By: sabderra <sabderra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/08 17:58:19 by hbaddrul          #+#    #+#             */
-/*   Updated: 2025/02/06 17:08:16 by sabderra         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:37:12 by sabderra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,11 @@ int	main(int ac, char **av)
 	}
 	server_pid = ft_atoi(av[1]);
 	str = av[2];
+	if (server_pid <= 0)
+	{
+		write(1, "Error: Invalid PID\n", 19);
+		return (1);
+	}
 	i = 0;
 	while (str[i])
 	{

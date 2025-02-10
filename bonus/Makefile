@@ -27,7 +27,7 @@ $(FT_PRINTF_LIB):
 	$(MAKE) -C $(FT_PRINTF_DIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I./ -I$(FT_PRINTF_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJ_SERVER) $(OBJ_CLIENT) $(OBJ_UTILS)

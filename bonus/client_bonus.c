@@ -6,7 +6,7 @@
 /*   By: sabderra <sabderra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 16:26:18 by sabderra          #+#    #+#             */
-/*   Updated: 2025/02/06 16:24:21 by sabderra         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:36:48 by sabderra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ void	len_sender(int len, int server_pid)
 
 int	main(int ac, char **av)
 {
-	int		server_pid;
-	char	*str;
-	int		len;
-	int		i;
+	int			server_pid;
+	char		*str;
+	int			len;
+	static int	i;
 
 	if (ac != 3)
 	{
@@ -70,14 +70,15 @@ int	main(int ac, char **av)
 	signal(SIGUSR1, reaciver);
 	str = av[2];
 	len = 0;
-	i = 0;
 	server_pid = ft_atoi(av[1]);
+	if (server_pid <= 0)
+	{
+		write(1, "Error: Invalid PID\n", 19);
+		return (1);
+	}
 	while (av[2][len])
 		len++;
 	len_sender(len, server_pid);
 	while (str[i])
-	{
-		bit_sender(str[i], server_pid);
-		i++;
-	}
+		bit_sender(str[i++], server_pid);
 }
