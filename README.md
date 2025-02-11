@@ -16,8 +16,8 @@
    - The client takes a **message and the server’s PID** as arguments.  
    - It converts each character of the message into **binary (8 bits)**.  
    - It sends **each bit** as a signal:  
-     - `SIGUSR1` → represents bit **0**  
-     - `SIGUSR2` → represents bit **1**  
+     - `SIGUSR1` → represents bit **1**  
+     - `SIGUSR2` → represents bit **0**  
    - The client sends characters **bit by bit** until the full message is sent.  
 
 3. **Server Receives the Message**  
