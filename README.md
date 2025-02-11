@@ -50,8 +50,8 @@ Hello!
 
 ### **3️⃣ Key Components**
 ✅ **Signals Used**:  
-   - `SIGUSR1` → Bit `0`  
-   - `SIGUSR2` → Bit `1`  
+   - `SIGUSR1` → Bit `1`  
+   - `SIGUSR2` → Bit `0`  
 
 ✅ **Bitwise Operations**:  
    - The client **shifts** and sends each bit separately.  
