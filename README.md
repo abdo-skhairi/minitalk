@@ -1,4 +1,4 @@
-![ALt text](https://github.com/abdo-skhairi/minitalk/blob/main/mini%20(1).jpg)
+![ALt text](https://github.com/abdo-skhairi/minitalk/blob/main/image.jpg)
 
 ### **Minitalk Project**  
 
