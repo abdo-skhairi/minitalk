@@ -9,8 +9,8 @@
 ### **1️⃣ How Minitalk Works (Client → Server Messaging)**  
 
 1. **Server Setup**  
-   - The server starts and prints its **Process ID (PID)**.  
-   - It waits for signals (`SIGUSR1` and `SIGUSR2`) from the client.  
+   - The server starts and prints its **Process ID (PID)** with gepid();.  
+   - It waits for signals (`SIGUSR1` and `SIGUSR2`) from the client using signal(); or sigaction();.  
 
 2. **Client Sends a Message**  
    - The client takes a **message and the server’s PID** as arguments.  
