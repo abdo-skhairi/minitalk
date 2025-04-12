@@ -58,6 +58,13 @@ Hello!
    - The server **rebuilds** characters using bitwise operations.  
 
 ✅ **Reliability Mechanism** (Bonus):  
-   - The server **acknowledges receipt** by sending signals back to the client.  
+   - The server **acknowledges receipt** by sending signals back to the client.
+
+## 📬 Contact Me
+
+- 📧 **Email:** skhairi.abderahmane@gmail.com  
+- 📸 **Instagram:** [@abdo.skh](https://instagram.com/abdo.skh)
+
+---
 
 ---
